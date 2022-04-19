@@ -1,19 +1,28 @@
 import React from "react";
 import './App.css';
-import { useFormik } from 'formik'
+import { useFormik, validateYupSchema } from 'formik'
 
 function App() {
-  // TODO: add a const called formik assigned to useFormik()
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      email: '',
+      password: '',
+    },
+    onSubmit: values => {
+      console.log('form:', values);
+    }
+  });
 
   return (
     <div>
-      <form>
+      <form onSubmit={formik.handleSubmit}>
         <div>Name</div>
-        <input id="name" type="text" />
+        <input name="name" type="text" onChange={formik.handleChange} value={formik.values.name} />
         <div>Email</div>
-        <input id="email" type="text" />
+        <input name="email" type="text" onChange={formik.handleChange} value={formik.values.email} />        
         <div>Password</div>
-        <input id="password" type="text" />
+        <input name="password" type="text" onChange={formik.handleChange} value={formik.values.password} />
         <button type="submit">Submit</button>
       </form>
     </div>
