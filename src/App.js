@@ -1,5 +1,5 @@
 import React from "react";
-import './App.css';
+// import './App.css';
 import { useFormik, validateYupSchema } from 'formik'
 
 function App() {
@@ -11,6 +11,13 @@ function App() {
     },
     onSubmit: values => {
       console.log('form:', values);
+    },
+    validate: values => {
+      let errors = {};
+      if (!values.name) errors.name = 'Required';
+      if (!values.email) errors.email = 'Required';
+      if (!values.password) errors.password = 'Required';
+      return errors;
     }
   });
 
@@ -19,10 +26,13 @@ function App() {
       <form onSubmit={formik.handleSubmit}>
         <div>Name</div>
         <input name="name" type="text" onChange={formik.handleChange} value={formik.values.name} />
+        {formik.errors.name ? <div style={{ colors: 'red' }}>{formik.errors.name}</div> : null}
         <div>Email</div>
-        <input name="email" type="text" onChange={formik.handleChange} value={formik.values.email} />        
+        <input name="email" type="text" onChange={formik.handleChange} value={formik.values.email} /> 
+        {formik.errors.email ? <div style={{ colors: 'red' }}>{formik.errors.email}</div> : null}       
         <div>Password</div>
         <input name="password" type="text" onChange={formik.handleChange} value={formik.values.password} />
+        {formik.errors.password ? <div style={{ colors: 'red' }}>{formik.errors.password}</div> : null}
         <button type="submit">Submit</button>
       </form>
     </div>
