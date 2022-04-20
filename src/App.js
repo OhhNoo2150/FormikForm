@@ -3,6 +3,9 @@ import { FormikContext, useFormik } from 'formik';
 
 const validate = values => {
   let errors = {};
+  if (!values.nameField) {
+    errors.name = 'Field required';
+  }
   if (!values.pswField) {
     errors.password = 'Field required';
   }
