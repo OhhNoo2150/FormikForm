@@ -36,7 +36,9 @@ function App() {
   return (
     <div>
       <form onSubmit={formik.handleSubmit}>        
-
+        <div>Name</div>
+        <input
+          id='nameField' type='name' onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.nameField} />{formik.touched.nameField && formik.errors.name ? (<div id='nameError' style={errorStyle}>{formik.errors.email}</div>) : null}
         <div>Email</div>
         <input
           id='emailField' type='email' onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.emailField} />{formik.touched.emailField && formik.errors.email ? (<div id='emailError' style={errorStyle}>{formik.errors.email}</div>) : null}
