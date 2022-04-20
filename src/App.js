@@ -1,39 +1,51 @@
 import React from "react";
-// import './App.css';
-import { useFormik, validateYupSchema } from 'formik'
+import { FormikContext, useFormik } from 'formik';
+
+const validate = values => {
+  let errors = {};
+  if (!values.pswField) {
+    errors.password = 'Field required';
+  }
+  if (!values.emailField) {
+    errors.email = 'Field required';
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
+    .test(values.emailField)) {
+    errors.email = 'Username should be an email';
+  }
+  return errors;
+}
 
 function App() {
+
   const formik = useFormik({
     initialValues: {
-      name: '',
-      email: '',
-      password: '',
+      emailField: '',
+      pswField: ''
     },
+    validate,
     onSubmit: values => {
-      console.log('form:', values);
-    },
-    validate: values => {
-      let errors = {};
-      if (!values.name) errors.name = 'Required';
-      if (!values.email) errors.email = 'Required';
-      if (!values.password) errors.password = 'Required';
-      return errors;
+        alert('Login Successful!');
+        console.log('form:', values);
     }
   });
 
+  const errorStyle = {
+    color: 'red'
+  }
+
   return (
     <div>
-      <form onSubmit={formik.handleSubmit}>
-        <div>Name</div>
-        <input name="name" type="text" onChange={formik.handleChange} value={formik.values.name} />
-        {formik.errors.name ? <div style={{ colors: 'red' }}>{formik.errors.name}</div> : null}
+      <form onSubmit={formik.handleSubmit}>        
+
         <div>Email</div>
-        <input name="email" type="text" onChange={formik.handleChange} value={formik.values.email} /> 
-        {formik.errors.email ? <div style={{ colors: 'red' }}>{formik.errors.email}</div> : null}       
+        <input
+          id='emailField' type='email' onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.emailField} />{formik.touched.emailField && formik.errors.email ? (<div id='emailError' style={errorStyle}>{formik.errors.email}</div>) : null}
+
         <div>Password</div>
-        <input name="password" type="text" onChange={formik.handleChange} value={formik.values.password} />
-        {formik.errors.password ? <div style={{ colors: 'red' }}>{formik.errors.password}</div> : null}
-        <button type="submit">Submit</button>
+        <input id='pswField' type='password' onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.pswField} />{formik.touched.pswField && formik.errors.password ? (<div id='pswError' style={errorStyle}>{formik.errors.password}</div>) : null}<br />
+
+        <button type='submit' id='submitBtn'>Submit</button>
+
       </form>
     </div>
   );
